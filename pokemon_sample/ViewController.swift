@@ -7,14 +7,43 @@
 
 import UIKit
 
+struct Pokemon: Decodable {
+    let name: String
+    let id: String
+    let sprites: Images
+}
+
+struct Images: Codable {
+    let frontImage: String
+    let shinyImage: String
+    
+    enum CodingKeys: String, CodingKey {
+        case frontImage = "front_default"
+        case shinyImage = "front_shiny"
+    }
+}
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        for i in 1...151 {
+            getPokemon(url: i)
+        }
     }
-
-
+    
+    func getPokemon(url:Int) {
+        Task {
+            let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(url)")!
+            let (data, _) = try await URLSession.shared.data(from: url)
+            
+            let text = String(data: data, encoding: .utf8)
+            
+            print(text)
+        }
+    }
+    
+    
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
