@@ -27,20 +27,20 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        for i in 1...151 {
+            getPokemon(url: i)
+        }
+    }
+    
+    func getPokemon(url:Int) {
         Task {
-            let url = URL(string: "https://pokeapi.co/api/v2/pokemon/1")!
+            let url = URL(string: "https://pokeapi.co/api/v2/pokemon/\(url)")!
             let (data, _) = try await URLSession.shared.data(from: url)
             
             let text = String(data: data, encoding: .utf8)
             
             print(text)
-            
-            
-            //let Images = try JSONDecoder().decode([Image].self, from: data)
-            //print("images: \(images)")
         }
-        
     }
     
     
